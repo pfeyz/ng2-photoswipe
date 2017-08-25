@@ -1,35 +1,35 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SampleComponent } from './sample.component';
-import { SampleDirective } from './sample.directive';
-import { SamplePipe } from './sample.pipe';
-import { SampleService } from './sample.service';
+import { PhotoswipeComponent } from './photoswipe.component';
+import { PhotoswipeDirective } from './photoswipe.directive';
+import { PhotoswipePipe } from './photoswipe.pipe';
+import { PhotoswipeService } from './photoswipe.service';
 
-export * from './sample.component';
-export * from './sample.directive';
-export * from './sample.pipe';
-export * from './sample.service';
+export * from './photoswipe.component';
+export * from './photoswipe.directive';
+export * from './photoswipe.pipe';
+export * from './photoswipe.service';
 
 @NgModule({
   imports: [
     CommonModule
   ],
   declarations: [
-    SampleComponent,
-    SampleDirective,
-    SamplePipe
+    PhotoswipeComponent,
+    PhotoswipeDirective,
+    PhotoswipePipe
   ],
   exports: [
-    SampleComponent,
-    SampleDirective,
-    SamplePipe
+    PhotoswipeComponent,
+    PhotoswipeDirective,
+    PhotoswipePipe
   ]
 })
-export class SampleModule {
+export class PhotoswipeModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: SampleModule,
-      providers: [SampleService]
+      ngModule: PhotoswipeModule,
+      providers: [PhotoswipeService]
     };
   }
 }

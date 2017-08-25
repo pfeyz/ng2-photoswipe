@@ -2,21 +2,21 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By }              from '@angular/platform-browser';
 import { DebugElement }    from '@angular/core';
 
-import { SampleComponent } from './sample.component';
+import { PhotoswipeComponent } from './photoswipe.component';
 
-describe('SampleComponent', () => {
+describe('PhotoswipeComponent', () => {
 
-  let comp:    SampleComponent;
-  let fixture: ComponentFixture<SampleComponent>;
+  let comp:    PhotoswipeComponent;
+  let fixture: ComponentFixture<PhotoswipeComponent>;
   let de:      DebugElement;
   let el:      HTMLElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ SampleComponent ], // declare the test component
+      declarations: [ PhotoswipeComponent ], // declare the test component
     });
 
-    fixture = TestBed.createComponent(SampleComponent);
+    fixture = TestBed.createComponent(PhotoswipeComponent);
 
     comp = fixture.componentInstance; // BannerComponent test instance
 
