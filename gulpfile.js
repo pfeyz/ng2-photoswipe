@@ -1,12 +1,14 @@
 /* eslint-disable */
 var gulp = require('gulp'),
-  path = require('path'),
-  ngc = require('@angular/compiler-cli/src/main').main,
-  rollup = require('gulp-rollup'),
-  rename = require('gulp-rename'),
-  del = require('del'),
-  runSequence = require('run-sequence'),
-  inlineResources = require('./tools/gulp/inline-resources');
+    path = require('path'),
+    ngc = require('@angular/compiler-cli/src/main').main,
+    //pswpt = require('@types/photoswipe'),
+    //pswp = require('photoswipe'),
+    rollup = require('gulp-rollup'),
+    rename = require('gulp-rename'),
+    del = require('del'),
+    runSequence = require('run-sequence'),
+    inlineResources = require('./tools/gulp/inline-resources');
 
 const rootFolder = path.join(__dirname);
 const srcFolder = path.join(rootFolder, 'src');

@@ -27,7 +27,9 @@
     "url": "https://github.com/pfeyz/ng2-photoswipe/issues"
   },
   "dependencies": {
-    "photoswipe": "4.1.2"
+    "@types/photoswipe": "^4.0.28",
+    "photoswipe": "4.1.2",
+    "typescript": "^2.2.2"
   },
   "devDependencies": {
     "@angular/common": "^4.0.0",
