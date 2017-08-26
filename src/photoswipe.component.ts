@@ -1,5 +1,6 @@
-import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {Options, Item} from '@types/photoswipe';
+import {Component, Input, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {PhotoSwipe, Options, Item, UI} from '@types/photoswipe';
+import {PhotoswipeService} from 'photoswipe.service';
 
 @Component({
     selector: 'photoswipe-component',
@@ -46,26 +47,109 @@ import {Options, Item} from '@types/photoswipe';
         '../node_modules/photoswipe/dist/default-skin/default-skin.css',
         'photoswipe.component.css'
     ],
-    //encapsulation: ViewEncapsulation.None,
+    // encapsulation: ViewEncapsulation.None,
 })
-export class PhotoswipeComponent {
+
+export class PhotoswipeComponent implements OnDestroy {
 
 
-    @Input() slides: Item;
-    @Input() slideSelector: string;
+    @Input() items: Item[];
+    @Input() pswpElement: HTMLElement;
     @Input() open: boolean;
     @Input() options: Options;
 
+    item: Item;
+
     @Output() onClose: EventEmitter<any> = new EventEmitter();
 
+    gallery: PhotoSwipe;
 
-    constructor() {
+    constructor(private uiConstructor: UI<Options>,) {
+
+        this.gallery = new PhotoSwipe(this.pswpElement, false, this.items, this.options);
+
+    }
+    noop()  {};
+
+    startGallery() {
+        let pswpElement = document.querySelectorAll('.pswp')[0];
+
+        if ((this.options.getThumbBoundsFn == null) &&
+            !(this.pswpElement == null)) {
+
+            this.options = angular.merge({}, {
+
+                getThumbBoundsFn: function (index) {
+                    let thumbnail = document.querySelectorAll(this.slideSelector)[index];
+                    let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+                    let rect = thumbnail.getBoundingClientRect();
+                    return {x: rect.left, y: rect.top + pageYScroll, w: rect.width};
+                }
+
+            }, this.options);
+        }
+
+        this.gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default || false, this.items, this.options);
+        this.gallery.init();
+        this.item = this.gallery.currItem;
+
+        this.gallery.listen('destroy', function () {
+            this.safeApply(function () {
+                (this.onClose || this.noop)();
+            });
+        });
+
+        this.gallery.listen('afterChange', function () {
+            this.safeApply(function () {
+                this.item = this.gallery.currItem;
+            });
+        });
+    };
+
+    start() {
+        this.open = true;
+        this.startGallery();
+    };
+
+    safeApply(fn: Function) {
+        let phase = this.$root.$$phase;
+        if (phase === '$apply' || phase === '$digest') {
+            if (fn && (typeof(fn) === 'function')) {
+                fn();
+            }
+        } else {
+            this.$apply(fn);
+        }
+    };
+
+    linkFn(scope, iElement, iAttrs) {
+
+
+        this.$watch('open', function (nVal, oVal) {
+            if (nVal != oVal) {
+                if (nVal) {
+                    this.startGallery();
+                }
+            } else if (!nVal && this.gallery) {
+                this.gallery.close();
+                this.gallery = null;
+            }
+        });
+
 
     }
 
+    ngOnDestroy() {
 
+        if (this.gallery) {
+            this.gallery.destroy();
+        }
+    }
 
-    cloaseWasClicked(clickedEntry: any): void {
+    closeWasClicked(clickedEntry: any): void {
+        this.open = false;
         this.onClose.emit([clickedEntry, this.open]);
     }
+
 }
+
